@@ -8,6 +8,8 @@ in
 {
   sops.secrets."webhook_secret" = {
     owner = "webhook";
+    group = "webhook";
+    mode = "0440";
   };
 
   services.caddy = {
@@ -68,7 +70,7 @@ in
           trigger-rule = {
             match = {
               type = "payload-hmac-sha256";
-              secret = "{{ getenv \"WEBHOOK_SECRET\" }}";
+              secret = "${config.sops.secrets.webhook_secret.path}";
               parameter = {
                 source = "header";
                 name = "X-Hub-Signature-256";
@@ -80,7 +82,6 @@ in
     };
 
     systemd.services.webhook.serviceConfig = {
-      EnvironmentFile = config.sops.secrets."webhook_secret".path;
       PrivateTmp = false;
     };
 
