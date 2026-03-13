@@ -5,10 +5,29 @@ let
   repoDir = "/var/www/hugo-repo";
 in
 {
-  sops.secrets."webhook_secret" = {
+  sops.templates."hooks.json" = {
     owner = "webhook";
-    group = "webhook";
-    mode = "0440";
+    content = ''
+      [
+        {
+          "id": "deploy-site",
+          "execute-command": "${pkgs.coreutils}/bin/touch",
+          "pass-arguments-to-command": [
+            { "source": "string", "name": "/run/deploy-trigger" }
+          ],
+          "trigger-rule": {
+            "match": {
+              "type": "payload-hmac-sha256",
+              "secret": "${config.sops.placeholder.webhook_secret}",
+              "parameter": {
+                "source": "header",
+                "name": "X-Hub-Signature-256"
+              }
+            }
+          }
+        }
+      ]
+    '';
   };
 
   services.caddy = {
@@ -52,33 +71,17 @@ in
 
   systemd.paths.deploy-trigger = {
     wantedBy = [ "multi-user.target" ];
-    pathConfig.PathModified = "/tmp/deploy-trigger";
+    pathConfig.PathModified = "/run/deploy-trigger";
     pathConfig.Unit = "deploy-hugo.service";
   };
 
   services.webhook = {
     enable = true;
     port = 9000;
-    hooks = {
-      deploy-site = {
-        execute-command = "${pkgs.coreutils}/bin/touch";
-        pass-arguments-to-command = [
-          { source = "string"; name = "/tmp/deploy-trigger"; }
-        ];
-        trigger-rule = {
-          match = {
-            type = "payload-hash-sha256";
-            secret = "$(cat ${config.sops.secrets."webhook_secret".path})";
-            parameter = {
-              source = "header";
-              name = "X-Hub-Signature-256";
-            };
-          };
-        };
-      };
-    };
+    hooksFiles = [ config.sops.templates."hooks.json".path ];
   };
 
+  systemd.services.webhook.serviceConfig.PrivateTmp = false;
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 }
