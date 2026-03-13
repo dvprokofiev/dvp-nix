@@ -72,6 +72,7 @@
 
           services.comin = {
             enable = true;
+            hostname = "cluster";
             remotes = [{
               name = "origin";
               url = "https://github.com/dvprokofiev/dvp-nix";
