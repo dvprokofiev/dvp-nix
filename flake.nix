@@ -10,6 +10,9 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    comin.url = "github:nlewo/comin";
+    comin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, disko, sops-nix, simple-nixos-mailserver, ... }: {
@@ -18,6 +21,7 @@
       modules = [
         sops-nix.nixosModules.sops
         simple-nixos-mailserver.nixosModule
+        comin.nixosModules.comin
         ./mailserver.nix
         ./hugo.nix
         disko.nixosModules.disko
