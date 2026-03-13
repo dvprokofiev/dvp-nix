@@ -1,5 +1,5 @@
 {
-  description = "NixOS simple install with Disko";
+  description = "dvprokofiev.ru server's config";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     disko.url = "github:nix-community/disko";
@@ -13,7 +13,7 @@
   };
 
   outputs = { self, nixpkgs, disko, sops-nix, simple-nixos-mailserver, ... }: {
-    nixosConfigurations.my-server = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.cluster = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         sops-nix.nixosModules.sops
