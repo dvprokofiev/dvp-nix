@@ -3,31 +3,11 @@
 let
   siteDir = "/var/www/hugo-site";
   repoDir = "/var/www/hugo-repo";
+  triggerPath = "/run/deploy-trigger";
 in
 {
-  sops.templates."hooks.json" = {
+  sops.secrets."webhook_secret" = {
     owner = "webhook";
-    content = ''
-      [
-        {
-          "id": "deploy-site",
-          "execute-command": "${pkgs.coreutils}/bin/touch",
-          "pass-arguments-to-command": [
-            { "source": "string", "name": "/run/deploy-trigger" }
-          ],
-          "trigger-rule": {
-            "match": {
-              "type": "payload-hmac-sha256",
-              "secret": "${config.sops.placeholder.webhook_secret}",
-              "parameter": {
-                "source": "header",
-                "name": "X-Hub-Signature-256"
-              }
-            }
-          }
-        }
-      ]
-    '';
   };
 
   services.caddy = {
@@ -78,10 +58,32 @@ in
   services.webhook = {
     enable = true;
     port = 9000;
-    hooksFiles = [ config.sops.templates."hooks.json".path ];
+    hooks = {
+      deploy-site = {
+        execute-command = "${pkgs.coreutils}/bin/touch";
+        pass-arguments-to-command = [
+          { source = "string"; name = triggerPath; }
+        ];
+        trigger-rule = {
+          match = {
+            type = "payload-hmac-sha256";
+            secret = "{{ getenv \"WEBHOOK_SECRET\" }}"; 
+            parameter = {
+              source = "header";
+              name = "X-Hub-Signature-256";
+            };
+          };
+        };
+      };
+    };
   };
 
-  systemd.services.webhook.serviceConfig.PrivateTmp = false;
+  systemd.services.webhook = {
+    serviceConfig = {
+      EnvironmentFile = config.sops.secrets."webhook_secret".path;
+      PrivateTmp = false;
+    };
+  };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 }
