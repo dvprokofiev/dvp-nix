@@ -5,7 +5,11 @@ let
   repoDir = "/var/www/hugo-repo";
 in
 {
-  sops.secrets."webhook_secret" = { };
+  sops.secrets."webhook_secret" = {
+    owner = "webhook";
+    group = "webhook";
+    mode = "0440";
+  };
 
   services.caddy = {
     enable = true;
@@ -46,15 +50,20 @@ in
     serviceConfig.User = "root";
   };
 
+  systemd.paths.deploy-trigger = {
+    wantedBy = [ "multi-user.target" ];
+    pathConfig.PathModified = "/tmp/deploy-trigger";
+    pathConfig.Unit = "deploy-hugo.service";
+  };
+
   services.webhook = {
     enable = true;
     port = 9000;
     hooks = {
       deploy-site = {
-        execute-command = "${pkgs.systemd}/bin/systemctl";
+        execute-command = "${pkgs.coreutils}/bin/touch";
         pass-arguments-to-command = [
-          { source = "string"; name = "start"; }
-          { source = "string"; name = "deploy-hugo.service"; }
+          { source = "string"; name = "/tmp/deploy-trigger"; }
         ];
         trigger-rule = {
           match = {
