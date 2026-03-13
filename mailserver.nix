@@ -2,7 +2,7 @@
 
 {
   sops.secrets."d_password" = {
-    neededForUsers = true;
+    neededForUsers = false; 
     owner = "dovecot";
     group = "dovecot";
     mode = "0440";
@@ -12,7 +12,6 @@
     enable = true;
     fqdn = "dvprokofiev.ru";
     domains = [ "dvprokofiev.ru" ];
-
     stateVersion = 3;
 
     x509 = {
@@ -27,6 +26,14 @@
     };
   };
 
-  users.users.postfix.extraGroups = [ "acme" ];
-  users.users.dovecot.extraGroups = [ "acme" ];
+  users.users.dovecot = {
+    isSystemUser = true;
+    group = "dovecot";
+    extraGroups = [ "caddy" ];
+  };
+
+  users.users.postfix = {
+    extraGroups = [ "caddy" ];
+  };
+  users.groups.dovecot = {};
 }
