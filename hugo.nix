@@ -1,9 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
 let
   siteDir = "/var/www/hugo-site";
   repoDir = "/var/www/hugo-repo";
-  triggerPath = "/run/deploy-trigger";
 in
 {
   sops.secrets."webhook_secret" = {
@@ -19,7 +18,7 @@ in
         root * ${siteDir}/public
         file_server
         
-        handle /webhook-deploy* {
+        handle_path /webhook-deploy* {
           reverse_proxy localhost:9000
         }
       '';
@@ -53,37 +52,33 @@ in
 
   systemd.paths.deploy-trigger = {
     wantedBy = [ "multi-user.target" ];
-    pathConfig.PathModified = triggerPath;
+    pathConfig.PathModified = "/tmp/deploy-trigger";
     pathConfig.Unit = "deploy-hugo.service";
   };
 
-    services.webhook = {
-      enable = true;
-      port = 9000;
-      hooksTemplated.hooks = builtins.toJSON [
-        {
-          id = "deploy-site";
-          execute-command = "${pkgs.coreutils}/bin/touch";
-          pass-arguments-to-command = [
-            { source = "string"; name = triggerPath; }
-          ];
-          trigger-rule = {
-            match = {
-              type = "payload-hmac-sha256";
-              secret = "${config.sops.secrets.webhook_secret.path}";
-              parameter = {
-                source = "header";
-                name = "X-Hub-Signature-256";
-              };
+  services.webhook = {
+    enable = true;
+    port = 9000;
+    hooks = {
+      deploy-site = {
+        execute-command = "${pkgs.coreutils}/bin/touch";
+        pass-arguments-to-command = [
+          { source = "string"; name = "/tmp/deploy-trigger"; }
+        ];
+        trigger-rule = {
+          match = {
+            type = "payload-hash-sha256";
+            secret = "${config.sops.secrets."webhook_secret".path}";
+            parameter = {
+              source = "header";
+              name = "X-Hub-Signature-256";
             };
           };
-        }
-      ];
+        };
+      };
     };
+  };
 
-    systemd.services.webhook.serviceConfig = {
-      PrivateTmp = false;
-    };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 }
