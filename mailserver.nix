@@ -3,6 +3,9 @@
 {
   sops.secrets."d_password" = {
     neededForUsers = true;
+    owner = "dovecot";
+    group = "dovecot";
+    mode = "0440";
   };
 
   mailserver = {
@@ -23,12 +26,6 @@
       };
     };
   };
-
-  users.users.dovecot = {
-    isSystemUser = true;
-    group = "dovecot";
-  };
-  users.groups.dovecot = {};
 
   users.users.postfix.extraGroups = [ "acme" ];
   users.users.dovecot.extraGroups = [ "acme" ];
