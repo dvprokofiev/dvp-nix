@@ -15,7 +15,7 @@
     comin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, disko, sops-nix, simple-nixos-mailserver, ... }: {
+  outputs = { self, nixpkgs, disko, sops-nix, simple-nixos-mailserver, comin, ... }: {
     nixosConfigurations.cluster = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
