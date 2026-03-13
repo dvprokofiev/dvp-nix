@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   siteDir = "/var/www/hugo-site";
@@ -51,38 +51,38 @@ in
 
   systemd.paths.deploy-trigger = {
     wantedBy = [ "multi-user.target" ];
-    pathConfig.PathModified = "/run/deploy-trigger";
+    pathConfig.PathModified = triggerPath;
     pathConfig.Unit = "deploy-hugo.service";
   };
 
-  services.webhook = {
-    enable = true;
-    port = 9000;
-    hooks = {
-      deploy-site = {
-        execute-command = "${pkgs.coreutils}/bin/touch";
-        pass-arguments-to-command = [
-          { source = "string"; name = triggerPath; }
-        ];
-        trigger-rule = {
-          match = {
-            type = "payload-hmac-sha256";
-            secret = "@${config.sops.secrets."webhook_secret".path}";
-            parameter = {
-              source = "header";
-              name = "X-Hub-Signature-256";
+    services.webhook = {
+      enable = true;
+      port = 9000;
+      hooksTemplated.hooks = builtins.toJSON [
+        {
+          id = "deploy-site";
+          execute-command = "${pkgs.coreutils}/bin/touch";
+          pass-arguments-to-command = [
+            { source = "string"; name = triggerPath; }
+          ];
+          trigger-rule = {
+            match = {
+              type = "payload-hmac-sha256";
+              secret = "{{ getenv \"WEBHOOK_SECRET\" }}";
+              parameter = {
+                source = "header";
+                name = "X-Hub-Signature-256";
+              };
             };
           };
-        };
-      };
+        }
+      ];
     };
-  };
 
-  systemd.services.webhook = {
-    serviceConfig = {
+    systemd.services.webhook.serviceConfig = {
+      EnvironmentFile = config.sops.secrets."webhook_secret".path;
       PrivateTmp = false;
     };
-  };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 }
