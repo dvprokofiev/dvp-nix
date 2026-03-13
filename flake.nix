@@ -66,6 +66,15 @@
             settings.PermitRootLogin = "prohibit-password";
           };
 
+          services.comin = {
+            enable = true;
+            remotes = [{
+              name = "origin";
+              url = "https://github.com/dvprokofiev.ru/dvp-nix";
+              branches = [ "main" ];
+            }];
+          };
+
           boot.initrd.availableKernelModules = [ "virtio_pci" "virtio_blk" "virtio_scsi" "ahci" "sd_mod" ];
 
           users.users.root.openssh.authorizedKeys.keys = [

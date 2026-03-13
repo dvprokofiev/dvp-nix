@@ -13,23 +13,14 @@
     stateVersion = 3;
 
     x509 = {
-        certificateFile = "/var/lib/acme/dvprokofiev.ru/fullchain.pem";
-        privateKeyFile = "/var/lib/acme/dvprokofiev.ru/key.pem";
+      certificateFile = "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/dvprokofiev.ru/dvprokofiev.ru.crt";
+      privateKeyFile = "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/dvprokofiev.ru/dvprokofiev.ru.key";
     };
 
     loginAccounts = {
       "d@dvprokofiev.ru" = {
         hashedPasswordFile = config.sops.secrets."d_password".path;
       };
-    };
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "d@dvprokofiev.ru";
-    certs."dvprokofiev.ru" = {
-      group = "acme";
-      listenHTTP = ":80";
     };
   };
 
