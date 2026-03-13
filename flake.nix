@@ -75,9 +75,7 @@
             remotes = [{
               name = "origin";
               url = "https://github.com/dvprokofiev/dvp-nix";
-              branches = [
-                { name = "main"; }
-              ];
+              branches.main.name = "main";
             }];
           };
 
