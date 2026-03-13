@@ -7,6 +7,13 @@
     group = "dovecot";
     mode = "0440";
   };
+    systemd.tmpfiles.rules = [
+    "z /var/lib/caddy 0750 caddy caddy - -"
+    "z /var/lib/caddy/.local 0750 caddy caddy - -"
+    "z /var/lib/caddy/.local/share 0750 caddy caddy - -"
+    "z /var/lib/caddy/.local/share/caddy 0750 caddy caddy - -"
+    "z /var/lib/caddy/.local/share/caddy/certificates 0750 caddy caddy - -"
+  ];
 
   mailserver = {
     enable = true;
