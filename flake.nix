@@ -85,10 +85,12 @@
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK9NvoW5oFTm3Sx/Mf4fwg67ftYYvQMpB0tz7XciAHzW daniiil@daniiil-20jjs0cu1m"
           ];
 
+          nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
           sops = {
             defaultSopsFile = ./secrets/secrets.yaml; 
             age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-        };
+          };
           system.stateVersion = "25.05";
         })
       ];
