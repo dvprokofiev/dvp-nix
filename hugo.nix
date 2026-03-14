@@ -22,13 +22,12 @@ in
           name: /tmp/deploy-trigger
       response-message: ok
       trigger-rule:
-        and:
-          - match:
-            type: payload-hash-sha256
-            secret: ${config.sops.placeholder.webhook_secret}
-            parameter:
-              source: header
-              name: X-Hub-Signature-256
+        match:
+          type: payload-hash-sha256
+          secret: ${config.sops.placeholder.webhook_secret}
+          parameter:
+            source: header
+            name: X-Hub-Signature-256
     '';
   };
 
