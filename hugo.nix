@@ -17,14 +17,14 @@ in
     content = ''
     - id: deploy-site
       execute-command: ${pkgs.coreutils}/bin/touch
-      pass-arguments-to-command: 
-        - source: string 
+      pass-arguments-to-command:
+        - source: string
           name: /tmp/deploy-trigger
       response-message: ok
       trigger-rule:
         match:
           type: payload-hash-sha256
-          secret: ${config.sops.placeholder.webhook_secret}
+          secret: "${config.sops.placeholder.webhook_secret}"
           parameter:
             source: header
             name: X-Hub-Signature-256
