@@ -11,6 +11,27 @@ in
     mode = "0440";
   };
 
+  sops.templates."webhook.yaml" = {
+    owner = "webhook";
+    group = "webhook";
+    content = ''
+    - id: deploy-site
+      execute-command: ${pkgs.coreutils}/bin/touch
+      pass-arguments-to-command: 
+        - source: string 
+          name: /tmp/deploy-trigger
+      response-message: ok
+      trigger-rule:
+        and:
+          - match:
+            type: payload-hash-sha256
+            secret: ${config.sops.placeholder.webhook_token}
+            parameter:
+              source: header
+              name: X-Hub-Signature-256
+    '';
+  };
+
   services.caddy = {
     enable = true;
     virtualHosts."dvprokofiev.ru" = {
@@ -56,26 +77,15 @@ in
     pathConfig.Unit = "deploy-hugo.service";
   };
 
-  services.webhook = {
-    enable = true;
-    port = 9000;
-    hooks = {
-      deploy-site = {
-        execute-command = "${pkgs.coreutils}/bin/touch";
-        pass-arguments-to-command = [
-          { source = "string"; name = "/tmp/deploy-trigger"; }
-        ];
-        trigger-rule = {
-          match = {
-            type = "payload-hash-sha256";
-            secret = "${config.sops.secrets."webhook_secret".path}";
-            parameter = {
-              source = "header";
-              name = "X-Hub-Signature-256";
-            };
-          };
-        };
-      };
+  systemd.services.webhook = {
+    description = "Hugo Deploy Webhook";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.webhook}/bin/webhook -port 9000 -hooks ${config.sops.templates."webhook.yaml".path} -verbose";
+      User = "webhook";
+      Group = "webhook";
+      Restart = "always";
     };
   };
 
