@@ -24,7 +24,7 @@ in
       trigger-rule:
         match:
           type: payload-hash-sha256
-          secret: "${config.sops.placeholder.webhook_secret}"
+          secret: ${config.sops.placeholder.webhook_secret}
           parameter:
             source: header
             name: X-Hub-Signature-256
