@@ -14,6 +14,7 @@ in
   sops.templates."webhook.yaml" = {
     owner = "webhook";
     group = "webhook";
+    restartUnits = [ "webhook.service" ];
     content = ''
     - id: deploy-site
       execute-command: ${pkgs.coreutils}/bin/touch
