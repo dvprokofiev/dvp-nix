@@ -40,10 +40,9 @@ in
         
         handle_path /webhook-deploy* {
           reverse_proxy localhost:9000
-          
-          header_up Host {host}
-          header_up X-Real-IP {remote_host}
-          header_up Content-Type {header.Content-Type}
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up Content-Type {header.Content-Type}
         }
       '';
     };
