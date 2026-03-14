@@ -27,7 +27,7 @@ in
           secret: ${config.sops.placeholder.webhook_secret}
           parameter:
             source: header
-            name: X-Hub-Signature-256
+            name: X-Hub-Signature
     '';
   };
 
