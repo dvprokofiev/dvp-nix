@@ -28,6 +28,7 @@ in
           parameter:
             source: header
             name: X-Hub-Signature-256
+            regexp: "^sha256=(.*)$"
     '';
   };
 
