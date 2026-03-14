@@ -23,11 +23,11 @@ in
       response-message: ok
       trigger-rule:
         match:
-          type: payload-hmac-sha1
-          secret: ${config.sops.placeholder.webhook_secret}
+          type: payload-hmac-sha256
+          secret: "${config.sops.placeholder.webhook_secret}"
           parameter:
             source: header
-            name: X-Hub-Signature
+            name: X-Hub-Signature-256
     '';
   };
 
