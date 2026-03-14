@@ -89,6 +89,8 @@ in
     };
   };
 
+  users.users.webhook = { isSystemUser = true; group = "webhook"; };
+  users.groups.webhook = {};
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 }
