@@ -25,7 +25,7 @@ in
         and:
           - match:
             type: payload-hash-sha256
-            secret: ${config.sops.placeholder.webhook_token}
+            secret: ${config.sops.placeholder.webhook_secret}
             parameter:
               source: header
               name: X-Hub-Signature-256
