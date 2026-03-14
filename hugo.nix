@@ -38,7 +38,7 @@ in
         root * ${siteDir}/public
         file_server
         
-        handle /webhook-deploy* {
+        handle /hooks* {
           reverse_proxy localhost:9000
         }
       '';
