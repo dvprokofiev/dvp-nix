@@ -22,17 +22,6 @@
         };
       };
 
-      folders = {
-        "matrix-sync" = {
-          path = "/var/lib/syncthing/matrix-sync";
-          devices = [
-            "ThinkPad"
-            "mainframe"
-          ];
-          type = "sendreceive";
-        };
-      };
-
       options = {
         globalAnnounceEnabled = false;
         localAnnounceEnabled = true;
