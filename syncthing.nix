@@ -1,16 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  users.users.syncthing = {
-    isSystemUser = true;
-    group = "syncthing";
-    home = "/var/lib/syncthing";
-    createHome = true;
-    description = "Service account for Syncthing";
-  };
-
-  users.groups.syncthing = { };
-
   services.syncthing = {
     enable = true;
     user = "syncthing";
