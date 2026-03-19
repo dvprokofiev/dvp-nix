@@ -28,6 +28,7 @@
         globalAnnounceEnabled = false;
         localAnnounceEnabled = true;
         relaysEnabled = true;
+        defaultFolderPath = "/var/lib/syncthing";
       };
     };
   };
