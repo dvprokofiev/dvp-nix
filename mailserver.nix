@@ -2,12 +2,12 @@
 
 {
   sops.secrets."d_password" = {
-    neededForUsers = false; 
+    neededForUsers = false;
     owner = "dovecot";
     group = "dovecot";
     mode = "0440";
   };
-    systemd.tmpfiles.rules = [
+  systemd.tmpfiles.rules = [
     "z /var/lib/caddy 0750 caddy caddy - -"
     "z /var/lib/caddy/.local 0750 caddy caddy - -"
     "z /var/lib/caddy/.local/share 0750 caddy caddy - -"
@@ -42,5 +42,5 @@
   users.users.postfix = {
     extraGroups = [ "caddy" ];
   };
-  users.groups.dovecot = {};
+  users.groups.dovecot = { };
 }
