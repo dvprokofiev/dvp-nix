@@ -16,9 +16,11 @@
       devices = {
         "ThinkPad" = {
           id = "IU7ZBUB-TW7BGYR-VL3SAR4-UH5WFXU-6F6YUH6-474LYZD-IMDS7ZF-AQPUXAQ";
+          autoAcceptFolders = true;
         };
         "mainframe" = {
           id = "HVFCZYI-BBEFVXB-2OWK3PS-6YEEQW5-G4ASGVR-F4D7DDG-A37FO3N-KBDR6QV";
+          autoAcceptFolders = true;
         };
       };
 
