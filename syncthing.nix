@@ -22,6 +22,10 @@
           id = "HVFCZYI-BBEFVXB-2OWK3PS-6YEEQW5-G4ASGVR-F4D7DDG-A37FO3N-KBDR6QV";
           autoAcceptFolders = true;
         };
+        "kukui" = {
+          id = "7Q6CZM4-4Q7BIAY-673OIDS-VX6GJAV-3HXOTGM-UIU6WW6-OIX643D-Y5KZ5QS";
+          autoAcceptFolders = true;
+        };
       };
 
       options = {
