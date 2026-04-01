@@ -18,5 +18,11 @@
     database = {
       type = "sqlite";
     };
+
+    poolConfig = {
+      "listen.owner" = "freshrss";
+      "listen.group" = "freshrss";
+      "listen.mode" = "0660";
+    };
   };
 }
