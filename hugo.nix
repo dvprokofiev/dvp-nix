@@ -45,7 +45,7 @@ in
       '';
     };
     virtualHosts."rss.dvprokofiev.ru".extraConfig = ''
-      reverse_proxy unix/${config.services.freshrss.dataDir}/freshrss.sock
+      reverse_proxy unix//run/phpfpm/freshrss.sock
     '';
   };
 

@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  users.users.caddy.extraGroups = [ "freshrss" ];
+
   sops.secrets."freshrss_password" = {
     owner = config.services.freshrss.user;
   };
