@@ -16,19 +16,19 @@ in
     group = "webhook";
     restartUnits = [ "webhook.service" ];
     content = ''
-    - id: deploy-site
-      execute-command: ${pkgs.coreutils}/bin/touch
-      pass-arguments-to-command:
-        - source: string
-          name: /tmp/deploy-trigger
-      response-message: ok
-      trigger-rule:
-        match:
-          type: payload-hmac-sha256
-          secret: "${config.sops.placeholder.webhook_secret}"
-          parameter:
-            source: header
-            name: X-Hub-Signature-256
+      - id: deploy-site
+        execute-command: ${pkgs.coreutils}/bin/touch
+        pass-arguments-to-command:
+          - source: string
+            name: /tmp/deploy-trigger
+        response-message: ok
+        trigger-rule:
+          match:
+            type: payload-hmac-sha256
+            secret: "${config.sops.placeholder.webhook_secret}"
+            parameter:
+              source: header
+              name: X-Hub-Signature-256
     '';
   };
 
@@ -38,19 +38,26 @@ in
       extraConfig = ''
         root * ${siteDir}/public
         file_server
-        
+
         handle /hooks* {
           reverse_proxy localhost:9000
         }
       '';
     };
+    virtualHosts."rss.dvprokofiev.ru".extraConfig = ''
+      reverse_proxy unix/${config.services.freshrss.dataDir}/freshrss.sock
+    '';
   };
 
   systemd.services.deploy-hugo = {
     description = "Clone and build Hugo site";
-    wantedBy = [ "multi-user.target" ]; 
-    after = [ "network.target" ]; 
-    path = with pkgs; [ git hugo bash ];
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    path = with pkgs; [
+      git
+      hugo
+      bash
+    ];
     script = ''
       set -e
       if [ ! -d "${repoDir}/.git" ]; then
@@ -63,7 +70,7 @@ in
 
       rm -rf ${siteDir}/public/*
       mkdir -p ${siteDir}/public
-      
+
       hugo --minify -d ${siteDir}/public
       chown -R caddy:caddy ${siteDir}
     '';
@@ -82,15 +89,23 @@ in
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      ExecStart = "${pkgs.webhook}/bin/webhook -port 9000 -hooks ${config.sops.templates."webhook.yaml".path} -verbose";
+      ExecStart = "${pkgs.webhook}/bin/webhook -port 9000 -hooks ${
+        config.sops.templates."webhook.yaml".path
+      } -verbose";
       User = "webhook";
       Group = "webhook";
       Restart = "always";
     };
   };
 
-  users.users.webhook = { isSystemUser = true; group = "webhook"; };
-  users.groups.webhook = {};
+  users.users.webhook = {
+    isSystemUser = true;
+    group = "webhook";
+  };
+  users.groups.webhook = { };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
 }

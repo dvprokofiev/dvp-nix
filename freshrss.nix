@@ -1,0 +1,20 @@
+{ config, pkgs, ... }:
+
+{
+  sops.secrets."freshrss_password" = {
+    owner = config.services.freshrss.user;
+  };
+  services.freshrss = {
+    enable = true;
+
+    language = "ru";
+    defaultUser = "picard";
+    passwordFile = config.sops.secrets."freshrss_password".path;
+
+    baseUrl = "https://rss.dvprokofiev.ru";
+
+    database = {
+      type = "sqlite";
+    };
+  };
+}

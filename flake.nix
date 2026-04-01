@@ -36,6 +36,7 @@
           ./hugo.nix
           ./firewall.nix
           ./syncthing.nix
+          ./freshrss.nix
           disko.nixosModules.disko
           (
             {
