@@ -44,9 +44,6 @@ in
         }
       '';
     };
-    virtualHosts."rss.dvprokofiev.ru".extraConfig = ''
-      reverse_proxy unix//run/phpfpm/freshrss.sock
-    '';
   };
 
   systemd.services.deploy-hugo = {
