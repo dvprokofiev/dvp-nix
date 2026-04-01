@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  users.users.caddy.extraGroups = [ "freshrss" ];
+  users.users.caddy.extraGroups = [
+    "nginx"
+    "freshrss"
+  ];
 
   sops.secrets."freshrss_password" = {
     owner = config.services.freshrss.user;
@@ -19,10 +22,8 @@
       type = "sqlite";
     };
 
-    poolConfig = {
-      "listen.owner" = "freshrss";
-      "listen.group" = "freshrss";
-      "listen.mode" = "0660";
-    };
+    systemd.tmpfiles.rules = [
+      "z /run/phpfpm/freshrss.sock 0660 nginx nginx -"
+    ];
   };
 }
