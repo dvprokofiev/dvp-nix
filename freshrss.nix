@@ -9,6 +9,7 @@
   sops.secrets."freshrss_password" = {
     owner = config.services.freshrss.user;
   };
+
   services.freshrss = {
     enable = true;
 
@@ -21,9 +22,9 @@
     database = {
       type = "sqlite";
     };
-
-    systemd.tmpfiles.rules = [
-      "z /run/phpfpm/freshrss.sock 0660 nginx nginx -"
-    ];
   };
+
+  systemd.tmpfiles.rules = [
+    "z /run/phpfpm/freshrss.sock 0660 nginx nginx -"
+  ];
 }
