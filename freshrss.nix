@@ -25,6 +25,7 @@
   };
 
   systemd.tmpfiles.rules = [
+    "d /run/phpfpm 0755 root root -"
     "z /run/phpfpm/freshrss.sock 0660 nginx nginx -"
   ];
 }
