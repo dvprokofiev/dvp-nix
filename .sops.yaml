@@ -1,9 +1,9 @@
 keys:
-  - &admin age146z6vd0uje7ghtpjk62nc30svmfpn50jcfnns2rdzcltwj6wh4vsjqcs0v
-  - &server age1p7tsczvhtddkl3yvclv087k0nme6az0namn7partyu54h2te7c0sy2rggs
+  - &cluster age1p7tsczvhtddkl3yvclv087k0nme6az0namn7partyu54h2te7c0sy2rggs
 creation_rules:
   - path_regex: secrets/.*\.yaml$
     key_groups:
-      - age:
-          - *admin
-          - *server
+      - pgp:
+          - "EB3CD1265EB311BEFE3B3F25CE305C8F378F80D8"
+        age:
+          - *cluster
