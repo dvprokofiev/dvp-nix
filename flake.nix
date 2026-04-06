@@ -112,7 +112,7 @@
               networking.hostName = "cluster";
 
               users.users.root.openssh.authorizedKeys.keys = [
-                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK9NvoW5oFTm3Sx/Mf4fwg67ftYYvQMpB0tz7XciAHzW daniiil@daniiil-20jjs0cu1m"
+                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJt5ThLdEaED7jotHitHMwFFrAZdex09+/9c9l2+B+/c"
               ];
 
               nix.settings.experimental-features = [
