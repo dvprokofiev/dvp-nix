@@ -31,14 +31,15 @@
     };
   };
 
-  services.caddy = {
-    enable = true;
-    virtualHosts = {
-      "seating-generator.ru" = {
-        extraConfig = ''
-          reverse_proxy localhost:8092
-        '';
-      };
-    };
+  services.caddy.virtualHosts."seating-generator.ru" = {
+    extraConfig = ''
+      handle_path /api/* {
+          reverse_proxy 127.0.0.1:8091
+      }
+
+      handle {
+          reverse_proxy 127.0.0.1:8092
+      }
+    '';
   };
 }
