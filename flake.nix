@@ -38,6 +38,7 @@
           ./syncthing.nix
           ./freshrss.nix
           ./vaultwarden.nix
+          ./seating-generator.nix
           disko.nixosModules.disko
           (
             {
