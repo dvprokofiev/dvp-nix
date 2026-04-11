@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+
+  users.users.syncthing.extraGroups = [ "vaultwarden" ];
+
   services.syncthing = {
     enable = true;
     user = "syncthing";

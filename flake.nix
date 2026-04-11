@@ -37,6 +37,7 @@
           ./firewall.nix
           ./syncthing.nix
           ./freshrss.nix
+          ./vaultwarden.nix
           disko.nixosModules.disko
           (
             {
