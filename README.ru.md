@@ -12,5 +12,5 @@
 - [мой веб-сайт](https://dvprokofiev.ru), написанный на Hugo автоматически пересобирается при любом изменении GitHub репозитория
 - инстанс FreshRSS
 - Syncthing
-- VaultWarden, бекапы через Syncthing
+- Vaultwarden, бекапы через Syncthing
 - мой [генератор рассадок](https://github.com/dvprokofiev/seating-generator)
