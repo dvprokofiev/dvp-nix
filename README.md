@@ -2,7 +2,7 @@
 
 [Русский](./README.ru.md)
 
->[!DISCLAIMER]
+> [!IMPORTANT]
 > This is not a kind of config that you should just ```git clone``` and use. It's here because I think that it can be useful for some kind of people interested in NixOS, servers, etc.
 
 ## What's going on here?
