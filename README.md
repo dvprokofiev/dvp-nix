@@ -1,5 +1,7 @@
 # My NixOS server config
 
+[Русский](./README.ru.md)
+
 >[!DISCLAIMER]
 > This is not a kind of config that you should just ```git clone``` and use. It's here because I think that it can be useful for some kind of people interested in NixOS, servers, etc.
 
