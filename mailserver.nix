@@ -26,7 +26,7 @@
       privateKeyFile = "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/dvprokofiev.ru/dvprokofiev.ru.key";
     };
 
-    loginAccounts = {
+    accounts = {
       "d@dvprokofiev.ru" = {
         hashedPasswordFile = config.sops.secrets."d_password".path;
       };
