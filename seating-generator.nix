@@ -19,15 +19,6 @@
         };
         dependsOn = [ "seating-backend" ];
       };
-
-      "watchtower" = {
-        image = "nickfedor/watchtower:latest";
-        volumes = [ "/var/run/docker.sock:/var/run/docker.sock" ];
-        environment = {
-          WATCHTOWER_POLL_INTERVAL = "60";
-          WATCHTOWER_CLEANUP = "true";
-        };
-      };
     };
   };
 
