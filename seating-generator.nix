@@ -12,7 +12,7 @@
       };
 
       "seating-frontend" = {
-        image = "ghcr.io/dvprokofiev/seating-generator-frontend:latest";
+        image = "ghcr.io/dvprokofiev/seating-generator-frontend:0.1.1";
         ports = [ "8092:80" ];
         environment = {
           BACKEND_PORT = "8091";
