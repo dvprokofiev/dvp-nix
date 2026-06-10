@@ -189,11 +189,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780884317,
-        "narHash": "sha256-34rahhJ4YRPQe7ZImq0nhO5sdvVauhrxEYgLu9y+7Kk=",
+        "lastModified": 1781026771,
+        "narHash": "sha256-1swDv6P1O7WvTN8D/sppni0hdcP8qTBMjhnqHIaoNSE=",
         "owner": "simple-nixos-mailserver",
         "repo": "nixos-mailserver",
-        "rev": "2b53b465018462f3486b70ffb5806b772365aeb0",
+        "rev": "bfa1fdc5a64683b2e822dbfe6f8b1baadc58e676",
         "type": "gitlab"
       },
       "original": {
