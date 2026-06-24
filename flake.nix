@@ -30,7 +30,7 @@
         system = "x86_64-linux";
         modules = [
           sops-nix.nixosModules.sops
-          simple-nixos-mailserver.nixosModule
+          simple-nixos-mailserver.nixosModules.default
           comin.nixosModules.comin
           ./mailserver.nix
           ./hugo.nix
