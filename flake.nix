@@ -122,6 +122,13 @@
                 "flakes"
               ];
 
+              nix.settings.auto-optimise-store = true;
+              nix.gc = {
+                automatic = true;
+                dates = "weekly";
+                options = "--delete-older-than 7d";
+              };
+
               sops = {
                 defaultSopsFile = ./secrets/secrets.yaml;
                 age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
