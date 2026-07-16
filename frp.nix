@@ -15,9 +15,4 @@
       auth.token = "$FRP_AUTH_TOKEN";
     };
   };
-
-  networking.firewall.allowedTCPPorts = [
-    7000
-    8080
-  ];
 }

@@ -15,6 +15,10 @@
       587 # SMTP Submission
       993 # IMAPS
 
+      # --- FRP ---
+      7000
+      8080
+
       # --- SYNCTHING ---
       22000 # Syncthing Transfer
     ];
