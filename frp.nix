@@ -17,15 +17,18 @@
   services.frp = {
     enable = true;
     role = "server";
-    extraArgs = [
-      "-c"
-      config.sops.templates."frps.toml".path
-    ];
   };
 
   systemd.services.frps = {
     wants = [ "sops-nix.service" ];
     after = [ "sops-nix.service" ];
+
+    serviceConfig = {
+      ExecStart = [
+        ""
+        "${pkgs.frp}/bin/frps -c ${config.sops.templates."frps.toml".path}"
+      ];
+    };
   };
 
   networking.firewall.allowedTCPPorts = [
