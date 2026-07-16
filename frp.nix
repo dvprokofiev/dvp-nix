@@ -1,33 +1,18 @@
 { config, pkgs, ... }: {
 
   sops.secrets.frp_token = {
-    owner = "nobody";
-    group = "nogroup";
+    restartUnits = [ "frp-server.service" ];
   };
 
-  sops.templates."frps.toml" = {
-    owner = "nobody";
-    group = "nogroup";
-    content = ''
-      bindPort = 7000
-      auth.token = "${config.sops.placeholder.frp_token}"
-    '';
-  };
-
-  services.frp = {
+  services.frp.instances.server = {
     enable = true;
     role = "server";
-  };
 
-  systemd.services.frps = {
-    wants = [ "sops-nix.service" ];
-    after = [ "sops-nix.service" ];
+    environmentFile = config.sops.secrets.frp_token.path;
 
-    serviceConfig = {
-      ExecStart = [
-        ""
-        "${pkgs.frp}/bin/frps -c ${config.sops.templates."frps.toml".path}"
-      ];
+    settings = {
+      bind_port = 7000;
+      auth.token = "$FRP_AUTH_TOKEN";
     };
   };
 
