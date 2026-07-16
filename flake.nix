@@ -129,6 +129,19 @@
                 options = "--delete-older-than 7d";
               };
 
+              # add mirrors to official cache.nixos.org mirror -- because it is being blocked in Russia unintentionally
+              nix.settings = {
+                substituters = [
+                  "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+                  "https://mirrors.ustc.edu.cn/nix-channels/store"
+                  "https://cache.nixos.org"
+                ];
+
+                trusted-public-keys = [
+                  "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+                ];
+              };
+
               sops = {
                 defaultSopsFile = ./secrets/secrets.yaml;
                 age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
