@@ -8,7 +8,7 @@
     enable = true;
     role = "server";
 
-    environmentFile = config.sops.secrets.frp_token.path;
+    environmentFiles = [ config.sops.secrets.frp_token.path ];
 
     settings = {
       bind_port = 7000;
