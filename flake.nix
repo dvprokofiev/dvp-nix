@@ -39,6 +39,7 @@
           ./freshrss.nix
           ./vaultwarden.nix
           ./seating-generator.nix
+          ./frp.nix
           disko.nixosModules.disko
           (
             {
