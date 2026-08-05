@@ -102,11 +102,6 @@
                     branches.main.name = "main";
                   }
                 ];
-                postApplyScript = ''
-                  #!${pkgs.bash}/bin/bash
-                  echo "Successful Comin build. Rebooting..."
-                  ${pkgs.systemd}/bin/systemctl reboot
-                '';
               };
 
               boot.initrd.availableKernelModules = [
