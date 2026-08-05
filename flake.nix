@@ -102,6 +102,11 @@
                     branches.main.name = "main";
                   }
                 ];
+                postApplyScript = ''
+                  #!${pkgs.bash}/bin/bash
+                  echo "Successful Comin build. Rebooting..."
+                  ${pkgs.systemd}/bin/systemctl reboot
+                '';
               };
 
               boot.initrd.availableKernelModules = [
@@ -125,8 +130,8 @@
               nix.settings.auto-optimise-store = true;
               nix.gc = {
                 automatic = true;
-                dates = "weekly";
-                options = "--delete-older-than 7d";
+                dates = "daily";
+                options = "--delete-older-than 2d";
               };
 
               # add mirrors to official cache.nixos.org mirror -- because it is being blocked in Russia unintentionally
