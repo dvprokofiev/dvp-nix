@@ -1,5 +1,5 @@
 keys:
-  - &cluster age1p7tsczvhtddkl3yvclv087k0nme6az0namn7partyu54h2te7c0sy2rggs
+  - &cluster age1f09any8ydtdgumr6vs0zd55z6xq4z6mtph2fs02f65kmx7t6y3ssvt5yh3
 creation_rules:
   - path_regex: secrets/.*\.yaml$
     key_groups:
