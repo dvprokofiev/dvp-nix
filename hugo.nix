@@ -54,6 +54,7 @@ in
       git
       hugo
       bash
+      go
     ];
     script = ''
       set -e
