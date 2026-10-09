@@ -4,6 +4,8 @@
   networking.firewall = {
     enable = true;
 
+    trustedInterfaces = [ "tailscale0" ];
+
     allowedTCPPorts = [
       22 # SSH
       80
@@ -20,6 +22,7 @@
     ];
 
     allowedUDPPorts = [
+      41641 # Tailscale WireGuard direct connections
       22000 # Syncthing Transfer
       21027 # Syncthing Discovery
     ];
