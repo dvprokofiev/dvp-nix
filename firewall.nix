@@ -7,7 +7,6 @@
     trustedInterfaces = [ "tailscale0" ];
 
     allowedTCPPorts = [
-      22 # SSH
       80
       443 # HTTP/HTTPS
 
