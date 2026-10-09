@@ -111,6 +111,40 @@
 
             services.tailscale.enable = true;
 
+            # check kernel and reboot if needed
+            systemd.services.kernel-update-reboot = {
+              description = "Reboot server if kernel or initrd was updated";
+              serviceConfig = {
+                Type = "oneshot";
+              };
+              path = [
+                pkgs.systemd
+                pkgs.coreutils
+              ];
+              script = ''
+                bootedKernel="$(readlink -f /run/booted-system/kernel 2>/dev/null || true)"
+                currentKernel="$(readlink -f /run/current-system/kernel 2>/dev/null || true)"
+                bootedInitrd="$(readlink -f /run/booted-system/initrd 2>/dev/null || true)"
+                currentInitrd="$(readlink -f /run/current-system/initrd 2>/dev/null || true)"
+                if [ -n "$bootedKernel" ] && [ -n "$currentKernel" ] && { [ "$bootedKernel" != "$currentKernel" ] || [ "$bootedInitrd" != "$currentInitrd" ]; }; then
+                  echo "New kernel detected (booted: $bootedKernel, current: $currentKernel). Rebooting..."
+                  systemctl reboot
+                else
+                  echo "Kernel did not change, reboot is not required."
+                fi
+              '';
+            };
+            # timer: check kernel at 04:00 at night and reboot if needed
+            systemd.timers.kernel-update-reboot = {
+              description = "Daily check for kernel updates at 04:00 MSK";
+              wantedBy = [ "timers.target" ];
+              timerConfig = {
+                OnCalendar = "*-*-* 04:00:00 Europe/Moscow";
+                Persistent = true;
+                RandomizedDelaySec = "20m";
+              };
+            };
+
             nix.settings.auto-optimise-store = true;
             nix.gc = {
               automatic = true;
