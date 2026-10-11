@@ -21,7 +21,6 @@
     ];
 
     allowedUDPPorts = [
-      41641 # Tailscale WireGuard direct connections
       22000 # Syncthing Transfer
       21027 # Syncthing Discovery
     ];

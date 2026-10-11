@@ -109,7 +109,16 @@
               "flakes"
             ];
 
-            services.tailscale.enable = true;
+            services.tailscale = {
+              enable = true;
+              openFirewall = true;
+            };
+
+            # do not restart Tailscale during deploy
+            systemd.services.tailscaled = {
+              restartIfChanged = false;
+              stopIfChanged = false;
+            };
 
             # check kernel and reboot if needed
             systemd.services.kernel-update-reboot = {
