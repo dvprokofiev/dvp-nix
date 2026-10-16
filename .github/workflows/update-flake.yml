@@ -13,7 +13,7 @@ jobs:
       - name: Install Determinate Nix
         uses: DeterminateSystems/determinate-nix-action@v3
       - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@main
+        uses: DeterminateSystems/update-flake-lock@v29
         with:
           token: ${{ secrets.GH_UPDATE_TOKEN }}
           pr-title: "Update Nix flake inputs"
