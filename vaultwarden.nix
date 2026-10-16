@@ -3,7 +3,9 @@
 {
   systemd.tmpfiles.rules = [
     "d /var/lib/vaultwarden 0700 vaultwarden vaultwarden -"
-    "d /var/lib/vaultwarden/backups 0700 vaultwarden vaultwarden -"
+    "d /var/backup/vaultwarden 0770 vaultwarden syncthing - -"
+    "d /var/backup/vaultwarden/.stfolder 0770 syncthing syncthing - -"
+    "Z /var/backup/vaultwarden 0770 vaultwarden syncthing - -"
   ];
 
   services.vaultwarden = {

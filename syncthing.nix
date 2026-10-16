@@ -26,7 +26,11 @@
           autoAcceptFolders = true;
         };
         "kukui" = {
-          id = "7Q6CZM4-4Q7BIAY-673OIDS-VX6GJAV-3HXOTGM-UIU6WW6-OIX643D-Y5KZ5QS";
+          id = "BG3N6IM-J5UHRG4-FFNAZW4-RVVRAS4-6N4J7S6-ZNOWQJ4-J7JUWOC-76STJQ3";
+          autoAcceptFolders = true;
+        };
+        "iPhone" = {
+          id = "MGNT7IP-I6VIWQY-HKIDZOU-7IRUQJG-IY5HK7C-HMTAVEB-YVQ2BON-PQX74AZ";
           autoAcceptFolders = true;
         };
       };
