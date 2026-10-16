@@ -20,7 +20,7 @@ in
         execute-command: ${pkgs.coreutils}/bin/touch
         pass-arguments-to-command:
           - source: string
-            name: /tmp/deploy-trigger
+            name: /run/webhook/deploy-trigger
         response-message: ok
         trigger-rule:
           match:
@@ -31,6 +31,14 @@ in
               name: X-Hub-Signature-256
     '';
   };
+
+  systemd.tmpfiles.rules = [
+    "d /run/webhook 0750 webhook webhook - -"
+    "d ${siteDir} 0755 hugo caddy - -"
+    "Z ${siteDir} 0755 hugo caddy - -"
+    "d ${repoDir} 0750 hugo caddy - -"
+    "Z ${repoDir} 0750 hugo caddy - -"
+  ];
 
   services.caddy = {
     enable = true;
@@ -56,6 +64,9 @@ in
       bash
       go
     ];
+    environment = {
+      HOME = "/var/lib/hugo";
+    };
     script = ''
       set -e
       if [ ! -d "${repoDir}/.git" ]; then
@@ -70,15 +81,25 @@ in
       mkdir -p ${siteDir}/public
 
       hugo --minify -d ${siteDir}/public
-      chown -R caddy:caddy ${siteDir}
     '';
-    serviceConfig.Type = "oneshot";
-    serviceConfig.User = "root";
+    serviceConfig = {
+      Type = "oneshot";
+      User = "hugo";
+      Group = "hugo";
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+      ReadWritePaths = [
+        siteDir
+        repoDir
+        "/var/lib/hugo"
+      ];
+    };
   };
 
   systemd.paths.deploy-trigger = {
     wantedBy = [ "multi-user.target" ];
-    pathConfig.PathModified = "/tmp/deploy-trigger";
+    pathConfig.PathModified = "/run/webhook/deploy-trigger";
     pathConfig.Unit = "deploy-hugo.service";
   };
 
@@ -93,8 +114,19 @@ in
       User = "webhook";
       Group = "webhook";
       Restart = "always";
+      RuntimeDirectory = "webhook";
+      RuntimeDirectoryMode = "0750";
     };
   };
+
+  users.users.hugo = {
+    isSystemUser = true;
+    group = "hugo";
+    extraGroups = [ "caddy" ];
+    home = "/var/lib/hugo";
+    createHome = true;
+  };
+  users.groups.hugo = { };
 
   users.users.webhook = {
     isSystemUser = true;
