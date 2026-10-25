@@ -33,8 +33,7 @@
         ./hugo.nix
         ./firewall.nix
         ./syncthing.nix
-				# disable until PHP fix would be avaiable
-        # ./freshrss.nix
+        ./freshrss.nix
         ./vaultwarden.nix
         ./seating-generator.nix
         ./deployer.nix
