@@ -14,3 +14,16 @@ jobs:
         uses: DeterminateSystems/determinate-nix-action@v3
       - name: Run nix flake check
         run: nix flake check
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Install Determinate Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Scan for Critical Vulnerabilities
+        run: |
+          nix run nixpkgs#trivy -- fs \
+            $(nix eval --raw .#nixosConfigurations.cluster.config.system.build.toplevel) \
+            --severity CRITICAL --exit-code 0
+    
