@@ -23,7 +23,9 @@ jobs:
         uses: DeterminateSystems/determinate-nix-action@v3
       - name: Scan for Critical Vulnerabilities
         run: |
-          nix run nixpkgs#trivy -- fs \
-            $(nix eval --raw .#nixosConfigurations.cluster.config.system.build.toplevel) \
-            --severity CRITICAL --exit-code 0
+          nix build .#nixosConfigurations.cluster.config.system.build.toplevel
+          nix run nixpkgs#trivy -- fs ./result \
+            --scanners vuln \
+            --severity CRITICAL \
+            --exit-code 0
     
