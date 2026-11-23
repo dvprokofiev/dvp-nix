@@ -56,8 +56,6 @@ in
 
   systemd.services.deploy-hugo = {
     description = "Clone and build Hugo site";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
     path = with pkgs; [
       git
       hugo
