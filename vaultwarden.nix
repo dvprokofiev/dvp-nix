@@ -9,12 +9,12 @@
   ];
 
   sops.secrets."vaultwarden_env" = {
-      owner = "vaultwarden";
-    };
+    owner = "vaultwarden";
+  };
 
   services.vaultwarden = {
     enable = true;
-    environmentFile = config.sops.templates."vaultwarden.env".path;
+    environmentFile = config.sops.secrets."vaultwarden_env".path;
     backupDir = "/var/backup/vaultwarden";
     config = {
       DOMAIN = "https://vault.klaaan.ru";
