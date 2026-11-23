@@ -156,8 +156,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1795434767,
-        "narHash": "sha256-QLknnJAcC9AYWRdSTRoygSyqOxi0WTtp4Ob8EQ9rp9A=",
+        "lastModified": 1795448856,
+        "narHash": "sha256-semEA2dYttReCCr/73InR063++D3tXZkvsNCbzq0FXY=",
         "type": "tarball",
         "url": "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/main/nixos-mailserver-main.tar.gz"
       },
