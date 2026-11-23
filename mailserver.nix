@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
 {
+  services.unbound = {
+    enable = true;
+  };
+
   sops.secrets."d_password" = {
     neededForUsers = false;
     owner = "dovecot";
